@@ -1,8 +1,6 @@
 import mongoose from 'mongoose'
 
-/////////ДОБАВИТЬ ЮРЛ НА БД
-
-const CONNECTION_URL = `mongodb+srv://troyanskii1998:xtsOdQS8eRfhSlgz@cluster0.tvrvrc0.mongodb.net/?retryWrites=true&w=majority`
+const CONNECTION_URL='mongodb+srv://troyanskii1998:xtsOdQS8eRfhSlgz@cluster0.tvrvrc0.mongodb.net/?retryWrites=true&w=majority';
 
 mongoose.connect(CONNECTION_URL, {
   useNewUrlParser: true,
