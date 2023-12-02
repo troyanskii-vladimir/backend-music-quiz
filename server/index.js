@@ -24,6 +24,7 @@ app.set("port", port);
 
 app.use(logger("dev"));
 app.use(express.json());
+app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/", indexRouter);
@@ -43,7 +44,7 @@ let users = [];
 
 /** Create HTTP server. */
 const server = createServer(app);
-app.use(cors());
+
 
 /** Create socket connection */
 const io = new Server(server, {
