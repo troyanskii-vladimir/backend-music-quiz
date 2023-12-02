@@ -2,8 +2,6 @@ import jwt from 'jsonwebtoken';
 // models
 import UserModel from '../models/User.js';
 
-const SECRET_KEY = 'some-secret-ke454';
-
 export const encode = async (req, res, next) => {
   console.log('encode')
   try {
@@ -23,18 +21,16 @@ export const encode = async (req, res, next) => {
 }
 
 export const decode = (req, res, next) => {
-  console.log('decode')
-  if (!req.headers['authorization']) {
-    return res.status(400).json({ success: false, message: 'No access token provided' });
+  if (!(req.headers.authorization || '').replace(/Bearer\s?/, '')) {
+    return res.status(403).json({ success: false, message: 'No access token provided' });
   }
-  const accessToken = req.headers.authorization.split(' ')[1];
+  const accessToken = (req.headers.authorization || '').replace(/Bearer\s?/, '');
   try {
-    const decoded = jwt.verify(accessToken, SECRET_KEY);
-    req.userId = decoded.userId;
-    req.userType = decoded.type;
+    const decoded = jwt.verify(accessToken, process.env.SECRET_JWT);
+    req.userId = decoded._id;
     return next();
   } catch (error) {
 
-    return res.status(401).json({ success: false, message: error.message });
+    return res.status(401).json({ success: false, message: error });
   }
 }

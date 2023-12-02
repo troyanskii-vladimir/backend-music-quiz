@@ -43,19 +43,19 @@ userSchema.statics.createUser = async function (userName, passwordHash, type) {
   }
 }
 
-// /**
-//  * @param {String} id, user id
-//  * @return {Object} User profile object
-//  */
-// userSchema.statics.getUserById = async function (id) {
-//   try {
-//     const user = await this.findOne({ _id: id });
-//     if (!user) throw ({ error: 'No user with this id found' });
-//     return user;
-//   } catch (error) {
-//     throw error;
-//   }
-// }
+/**
+ * @param {String} userId, user id
+ * @return {Object} User profile object
+ */
+userSchema.statics.getUserById = async function (userId) {
+  try {
+    const user = await this.findOne({ _id: userId });
+    if (!user) throw ({ error: 'No user with this id found' });
+    return user;
+  } catch (error) {
+    throw error;
+  }
+}
 
 // /**
 //  * @return {Array} List of all users

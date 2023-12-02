@@ -16,7 +16,7 @@ export default {
   },
   onGetUserById: async (req, res) => {
     try {
-      const user = await UserModel.getUserById(req.params.id);
+      const user = await UserModel.getUserById(req.userId);
       return res.status(200).json({ success: true, user });
     } catch (error) {
       return res.status(500).json({ success: false, error: error })
@@ -45,7 +45,7 @@ export default {
         {
           _id: user._id,
         },
-        `${process.env.SECRET_JWT}`
+        process.env.SECRET_JWT
       )
 
       return res.status(200).json({ success: true, user, token });
@@ -54,7 +54,6 @@ export default {
     }
   },
   onLoginUser: async (req, res) => {
-    console.log('login')
     try {
       const user = await UserModel.findOne({ userName: req.body.userName });
 
@@ -76,7 +75,7 @@ export default {
         {
           _id: user._id,
         },
-        `${process.env.SECRET_JWT}`
+        process.env.SECRET_JWT
       )
 
       return res.status(200).json({ success: true, user, token });

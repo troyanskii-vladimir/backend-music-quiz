@@ -1,15 +1,15 @@
 import express from 'express';
-import { registerValidation } from '../validations/auth.js';
 // controllers
 import user from '../controllers/user.js';
+import { decode } from '../middlewares/jwt.js';
 
 const router = express.Router();
 
 router
-  .get('/', user.onGetAllUsers)
+  // .get('/', user.onGetAllUsers)
   .post('/register', user.onCreateUser)
   .post('/login', user.onLoginUser)
-  .get('/:id', user.onGetUserById)
-  .delete('/:id', user.onDeleteUserById)
+  .get('/me', decode, user.onGetUserById)
+  // .delete('/:id', user.onDeleteUserById)
 
 export default router;
