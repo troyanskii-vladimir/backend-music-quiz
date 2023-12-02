@@ -13,7 +13,7 @@ import { decode } from './middlewares/jwt.js'
 // mongo connection
 import "./config/mongo.js";
 // socket configuration
-import WebSockets from "./utils/WebSockets.js";
+// import WebSockets from "./utils/WebSockets.js";
 
 const app = express();
 
@@ -27,7 +27,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/", indexRouter);
-app.use("/users", userRouter);
+app.use("/auth", userRouter);
 app.use("/room", decode, chatRoomRouter);
 app.use("/delete", deleteRouter);
 
@@ -39,18 +39,42 @@ app.use('*', (req, res) => {
   })
 });
 
+let users = [];
+
 /** Create HTTP server. */
 const server = createServer(app);
 app.use(cors());
+
 /** Create socket connection */
-global.io = new Server(server, {
+const io = new Server(server, {
   cors: {
     origin: 'http://localhost:5173',
-    methods: ['GET', 'POST'],
+    methods: ['GET', 'POST', 'DELETE', 'PUT'],
   },
 });
-// global.io = io.listen(server);
-global.io.on('connection', WebSockets.connection)
+
+io.on('connection', (client) => {
+  client.on("disconnect", () => {
+    users = users.filter((user) => user.socketId !== client.id);
+  });
+
+  client.on("identity", (userId) => {
+    users.push({
+      socketId: client.id,
+      userId: userId,
+    })
+  });
+
+  client.on("subscribe", (room, otherUserId = "") => {
+    this.subscribeOtherUser(room, otherUserId);
+    client.join(room);
+  });
+
+  client.on("unsubscribe", (room) => {
+    client.leave(room);
+  });
+});
+
 /** Listen on provided port, on all network interfaces. */
 server.listen(port);
 /** Event listener for HTTP server "listening" event. */

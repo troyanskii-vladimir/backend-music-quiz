@@ -5,6 +5,7 @@ import UserModel from '../models/User.js';
 const SECRET_KEY = 'some-secret-ke454';
 
 export const encode = async (req, res, next) => {
+  console.log('encode')
   try {
     const { userId } = req.params;
     const user = await UserModel.getUserById(userId);
@@ -22,6 +23,7 @@ export const encode = async (req, res, next) => {
 }
 
 export const decode = (req, res, next) => {
+  console.log('decode')
   if (!req.headers['authorization']) {
     return res.status(400).json({ success: false, message: 'No access token provided' });
   }
