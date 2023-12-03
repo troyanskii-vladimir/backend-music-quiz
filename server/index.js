@@ -7,6 +7,7 @@ import { Server } from 'socket.io';
 import indexRouter from "./routes/index.js";
 import userRouter from "./routes/user.js";
 import packRouter from "./routes/pack.js";
+import questionRouter from "./routes/question.js";
 import chatRoomRouter from "./routes/chatRoom.js";
 import deleteRouter from "./routes/delete.js";
 // middlewares
@@ -31,6 +32,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/", indexRouter);
 app.use("/auth", userRouter);
 app.use("/packs", packRouter);
+app.use("/questions", questionRouter);
 app.use("/room", decode, chatRoomRouter);
 app.use("/delete", deleteRouter);
 
