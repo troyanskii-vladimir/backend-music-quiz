@@ -6,6 +6,7 @@ import { Server } from 'socket.io';
 // routes
 import indexRouter from "./routes/index.js";
 import userRouter from "./routes/user.js";
+import packRouter from "./routes/pack.js";
 import chatRoomRouter from "./routes/chatRoom.js";
 import deleteRouter from "./routes/delete.js";
 // middlewares
@@ -29,6 +30,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/", indexRouter);
 app.use("/auth", userRouter);
+app.use("/packs", packRouter);
 app.use("/room", decode, chatRoomRouter);
 app.use("/delete", deleteRouter);
 
@@ -82,3 +84,4 @@ server.listen(port);
 server.on("listening", () => {
   console.log(`Listening on port:: http://localhost:${port}/`)
 });
+
