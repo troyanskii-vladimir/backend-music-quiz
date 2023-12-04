@@ -9,7 +9,7 @@ export default {
   onGetAllUsers: async (req, res) => {
     try {
       const users = await UserModel.getUsers();
-      return res.status(200).json({ success: true, users });
+      return res.status(200).json( users );
     } catch (error) {
       return res.status(500).json({ success: false, error: error })
     }
@@ -17,7 +17,7 @@ export default {
   onGetUserById: async (req, res) => {
     try {
       const user = await UserModel.getUserById(req.userId);
-      return res.status(200).json({ success: true, user });
+      return res.status(200).json( user );
     } catch (error) {
       return res.status(500).json({ success: false, error: error })
     }
@@ -38,8 +38,11 @@ export default {
       }));
       if (!validation.success) return res.status(400).json({ ...validation });
 
+
       const { userName, type } = req.body;
       const user = await UserModel.createUser(userName, hash, type);
+
+      console.log(process.env.SECRET_JWT)
 
       const token = jwt.sign(
         {
@@ -48,7 +51,7 @@ export default {
         process.env.SECRET_JWT
       )
 
-      return res.status(200).json({ success: true, user, token });
+      return res.status(200).json({ user, token });
     } catch (err) {
       return res.status(500).json({ success: false, error: err })
     }
@@ -78,7 +81,7 @@ export default {
         process.env.SECRET_JWT
       )
 
-      return res.status(200).json({ success: true, user, token });
+      return res.status(200).json({ user, token });
     } catch (err) {
       return res.status(500).json({ success: false, error: err })
     }
