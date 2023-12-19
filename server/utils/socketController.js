@@ -43,7 +43,7 @@ const app = app => {
 
     room.onDisconnect();
   });
-  
+
 
   return io;
 };
@@ -55,6 +55,7 @@ const verifySocker = (socket, next) => {
     next();
   }
 };
+
 
 
 export default app;
